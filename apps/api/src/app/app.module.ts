@@ -1,6 +1,8 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { VerifyModule } from "@scrum/api/modules/verify/verify.module";
+import { LoggerMiddleware } from "@scrum/api/core/middlewares/logger.middleware";
 
 @Module({
   imports: [
@@ -16,9 +18,17 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 			database: 'scrum',
 			entities: ['dist/**/*.entity.js'],
 			synchronize: false
-		})
+		}),
+		VerifyModule
 	],
   controllers: [],
   providers: []
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	public configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LoggerMiddleware).forRoutes({
+			path: '*',
+			method: RequestMethod.ALL
+		});
+	}
+}

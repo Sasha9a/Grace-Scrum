@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { VerifyEntity } from "@scrum/shared/entities/verify.entity";
 import { Inject } from "@nestjs/common";
 import { VerifyService } from "@scrum/api/modules/verify/verify.service";
@@ -10,8 +10,13 @@ export class VerifyResolver {
 	}
 
 	@Query(() => VerifyEntity)
-	public async findById(@Args('id') id: number): Promise<VerifyEntity> {
+	public async findById(@Args('id') id: number) {
 		return await this.verifyService.findById(id);
+	}
+
+	@Mutation(() => Boolean)
+	public async deleteById(@Args('id') id: number) {
+		return await this.verifyService.delete(id);
 	}
 
 }
