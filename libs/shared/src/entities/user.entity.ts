@@ -9,6 +9,10 @@ import { Column, CreateDateColumn, Entity, OneToOne } from "typeorm";
 export class UserEntity extends BaseEntity {
 
 	@Field()
+	@Column('varchar', { length: 64, nullable: false })
+	public email: string;
+
+	@Field()
 	@Column()
 	@CreateDateColumn()
 	public registerDate: Date;

@@ -13,7 +13,7 @@ export class VerifyEntity extends BaseEntity {
 
 	@Field()
 	@Column({ type: "enum", enum: VerifyEmailTypeEnum, nullable: false })
-	public roles: VerifyEmailTypeEnum;
+	public type: VerifyEmailTypeEnum;
 
 	@Field()
 	@Column('varchar', { length: 64, nullable: false })
