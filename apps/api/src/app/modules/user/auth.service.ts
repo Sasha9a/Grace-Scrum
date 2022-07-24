@@ -1,18 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserEntity } from "@scrum/shared/entities/user.entity";
+import { User } from "@scrum/shared/schemas/user.schema";
 
 @Injectable()
 export class AuthService {
 
-	public constructor(private readonly jwtService: JwtService) {
-	}
+  public constructor(private readonly jwtService: JwtService) {
+  }
 
-	public async login(user: UserEntity): Promise<{ accessToken: string }> {
-		const payload = { user: { id: user.id, email: user.email, roles: user.roles } };
-		return {
-			accessToken: this.jwtService.sign(payload)
-		};
-	}
+  public async login(user: User): Promise<{ accessToken: string }> {
+    const payload = { user: { _id: user._id, email: user.email, roles: user.roles } };
+    return {
+      accessToken: this.jwtService.sign(payload)
+    };
+  }
 
 }

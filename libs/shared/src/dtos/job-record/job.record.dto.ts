@@ -8,26 +8,26 @@ import { SprintDto } from "@scrum/shared/dtos/sprint/sprint.dto";
 @Expose()
 export class JobRecordDto extends BaseDto {
 
-	@Expose()
-	@Type(() => UserDto)
-	public user: UserDto;
+  @Expose()
+  @Type(() => UserDto)
+  public user: UserDto;
 
-	@Expose()
-	@Type(() => TaskDto)
-	public task: TaskDto;
+  @Expose()
+  @Type(() => TaskDto)
+  public task: TaskDto;
 
-	@Expose()
-	@Type(() => BoardDto)
-	public board: BoardDto;
+  @Expose()
+  @Type(() => BoardDto)
+  public board: BoardDto;
 
-	@Expose()
-	@Type(() => SprintDto)
-	public sprint: SprintDto;
+  @Expose()
+  @Type(() => SprintDto)
+  public sprint: SprintDto;
 
-	@Expose()
-	public date: Date;
+  @Expose()
+  public date: Date;
 
-	@Expose()
-	public timeWork: number;
+  @Expose()
+  public timeWork: number;
 
 }

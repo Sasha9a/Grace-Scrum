@@ -1,11 +1,17 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { VerifyEntity } from "@scrum/shared/entities/verify.entity";
+import { forwardRef, Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { UserModule } from "@scrum/api/modules/user/user.module";
+import { VerifyController } from "@scrum/api/modules/verify/verify.controller";
 import { VerifyService } from "@scrum/api/modules/verify/verify.service";
-import { VerifyResolver } from "@scrum/api/modules/verify/verify.resolver";
+import { VerifySchema } from "@scrum/shared/schemas/verify.schema";
 
 @Module({
-	imports: [TypeOrmModule.forFeature([VerifyEntity])],
-	providers: [VerifyService, VerifyResolver],
+  imports: [
+    MongooseModule.forFeature([{ name: "Verify", schema: VerifySchema }]),
+    forwardRef(() => UserModule)
+  ],
+  controllers: [VerifyController],
+  providers: [VerifyService],
+  exports: [VerifyService]
 })
 export class VerifyModule {}

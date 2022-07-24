@@ -6,16 +6,16 @@ import { environment } from "../../../environments/environment";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
-	public constructor() {
-		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			ignoreExpiration: false,
-			secretOrKey: environment.secret,
-		});
-	}
+  public constructor() {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: environment.secret,
+    });
+  }
 
-	public async validate(payload: any) {
-		return payload.user;
-	}
+  public async validate(payload: any) {
+    return payload.user;
+  }
 
 }

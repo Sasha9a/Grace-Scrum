@@ -1,22 +1,22 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { VerifyEntity } from "@scrum/shared/entities/verify.entity";
-import { Repository } from "typeorm";
+import { InjectModel } from "@nestjs/mongoose";
 import { BaseService } from "@scrum/api/core/services/base.service";
+import { Verify } from "@scrum/shared/schemas/verify.schema";
+import { Model } from "mongoose";
 
 @Injectable()
-export class VerifyService extends BaseService<VerifyEntity> {
+export class VerifyService extends BaseService<Verify> {
 
-	public constructor(@InjectRepository(VerifyEntity) private readonly verifyRepository: Repository<VerifyEntity>) {
-		super();
-	}
+  public constructor(@InjectModel(Verify.name) private readonly verifyModel: Model<Verify>) {
+    super(verifyModel);
+  }
 
-	public async findByEmail(email: string): Promise<VerifyEntity | null> {
-		return await this.verifyRepository.findOne({ where: { email: email } });
-	}
+  public async findByEmail(email: string): Promise<Verify | null> {
+    return await this.verifyModel.findOne({ email: email }).exec();
+  }
 
-	public async findByPath(path: string): Promise<VerifyEntity | null> {
-		return await this.verifyRepository.findOne({ where: { path: path } });
-	}
+  public async findByPath(path: string): Promise<Verify | null> {
+    return await this.verifyModel.findOne({ path: path }).exec();
+  }
 
 }

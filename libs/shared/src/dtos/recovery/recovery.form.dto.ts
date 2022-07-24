@@ -4,9 +4,9 @@ import { IsEmail } from "class-validator";
 @Expose()
 export class RecoveryFormDto {
 
-	@Expose()
-	@IsEmail({}, { message: "Невалидный email" })
-	@Transform((element) => element.value?.toLowerCase())
-	public email: string;
+  @Expose()
+  @IsEmail({}, { message: "Невалидный email" })
+  @Transform((element) => element.value?.toLowerCase())
+  public email: string;
 
 }

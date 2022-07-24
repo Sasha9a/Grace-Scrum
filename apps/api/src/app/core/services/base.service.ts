@@ -1,31 +1,31 @@
 import { Injectable } from "@nestjs/common";
-import { FindManyOptions, FindOptionsWhere, ObjectLiteral, Repository } from "typeorm";
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+import { FilterQuery, Model, ProjectionType, UpdateQuery } from "mongoose";
 
 @Injectable()
-export abstract class BaseService<T extends ObjectLiteral> {
+export class BaseService<T> {
 
-	protected repo: Repository<T>;
+  public constructor(private readonly model: Model<T>) {
+  }
 
-	public async create<K>(entity: K): Promise<T> {
-		const createdEntity = this.repo.create(entity as any);
-		return await this.repo.save(createdEntity) as unknown as Promise<T>;
-	}
+  public async create<K>(entity: K): Promise<T> {
+    const createEntity = new this.model(entity);
+    return await createEntity.save() as unknown as T;
+  }
 
-	public async findAll(filter?: FindManyOptions<T>): Promise<T[]> {
-		return await this.repo.find(filter);
-	}
+  public async findAll(filter?: FilterQuery<T>, projection?: ProjectionType<T>): Promise<T[]> {
+    return await this.model.find(filter, projection).exec();
+  }
 
-	public async findById(id: number): Promise<T> {
-		return await this.repo.findOneBy(<FindOptionsWhere<any>>{ id: id });
-	}
+  public async findById(id: string, projection?: ProjectionType<T>): Promise<T> {
+    return await this.model.findById(id, projection).exec();
+  }
 
-	public async update<K>(id: number, entity: QueryDeepPartialEntity<K>): Promise<T> {
-		return await this.repo.update(<FindOptionsWhere<any>>{ id: id }, entity as T) as unknown as T;
-	}
+  public async update<K>(id: string, entity: UpdateQuery<K>): Promise<T> {
+    return await this.model.findOneAndUpdate(<Partial<FilterQuery<T>>>{ _id: id }, { $set: entity }, { new: true }).exec() as unknown as T;
+  }
 
-	public async delete(id: number): Promise<T> {
-		return await this.repo.delete(id) as unknown as T;
-	}
+  public async delete(id: string): Promise<T> {
+    return await this.model.findByIdAndDelete(id).exec();
+  }
 
 }
